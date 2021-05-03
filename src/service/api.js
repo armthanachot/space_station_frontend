@@ -11,6 +11,11 @@ const postFormData = async(url,data)=>{
     return result 
 }
 
+const get = async(url)=>{
+    const result = await axios.get(`${url}`)
+    return result 
+}
+
 export {
-    post,postFormData
+    post,postFormData,get
 }
