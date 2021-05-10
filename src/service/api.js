@@ -12,7 +12,12 @@ const postFormData = async(url,data)=>{
 }
 
 const get = async(url)=>{
-    const result = await axios.get(`${url}`)
+    const headers = {
+        headers:{
+            "Authorization":`Bearer ${localStorage.getItem("token")}`
+        }
+    }
+    const result = await axios.get(`${apiUrl}/${url}`,headers)
     return result 
 }
 

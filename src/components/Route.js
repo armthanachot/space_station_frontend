@@ -16,7 +16,6 @@ export default function RouteComponent() {
             path:"/user",
             component:User
         }
-
     ]
     return (
         <div>

@@ -4,8 +4,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import * as api_service from "../../service/api"
+import { useHistory} from "react-router-dom"
 
 export default function Register() {
+    const history = useHistory()
     const MySwal = withReactContent(Swal)
     const useStyles = makeStyles((theme) => ({
         root: {
@@ -51,12 +53,21 @@ export default function Register() {
         formData.append("lname", lname)
         formData.append("address", address)
         const signedup = await api_service.postFormData("user/signup", formData)
-        console.log("signedup: ",signedup);
-        MySwal.fire({
-            icon: 'success',
-            title: 'success',
-            text: 'Registerd'
-        })
+        const {status} = signedup
+        if(status === 200){
+            MySwal.fire({
+                icon: 'success',
+                title: 'success',
+                text: 'Registerd'
+            })
+            history.push("/login")
+        }else{
+            MySwal.fire({
+                icon: 'error',
+                title: 'error',
+                text: 'Cannot Signup User'
+            })
+        }
     }
     const setEmailChange = (e) => {
         setEmail(e.target.value)
@@ -80,16 +91,8 @@ export default function Register() {
         setPreviewImg(URL.createObjectURL(e.target.files[0]))
         setImg(e.target.files[0])
     }
-    const test_data = [
-        {
-            name: "Thanchot"
-        },
-        {
-            name: "Patchara"
-        }
-    ]
     return (
-        <Container style={{ backgroundColor: "#69f0ae", border: "solid black 5px" }}>
+        <Container style={{ backgroundColor: "#69f0ae", border: "solid black 5px" , padding:"10px" }}>
             <h1>Registration Page</h1>
             <form onSubmit={register} >
                 <Grid container spacing={5} >
@@ -114,11 +117,6 @@ export default function Register() {
                         </Box>
                     </Grid>
                     <br />
-                    {
-                        test_data.map((item, index) => {
-                            return <TextField value={item.name}></TextField>
-                        })
-                    }
                 </Grid>
             </form>
         </Container>
